@@ -2,26 +2,26 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
     labels:
-        app: trainer-pyco2
+        app: pyco2-microservice
         stack: frontend
         source: pyco2
-    name: trainer-pyco2
+    name: pyco2-microservice
     namespace: microservices
 spec:
     replicas: 4
     selector:
         matchLabels:
-            run: trainer-pyco2
+            run: pyco2-microservice
     template:
         metadata:
             labels:
-                app: trainer-pyco2
-                run: trainer-pyco2
+                app: pyco2-microservice
+                run: pyco2-microservice
                 source: pyco2
         spec:
             containers:
-                -   image: 465848653329.dkr.ecr.us-west-2.amazonaws.com/trainer-pyco2
-                    name: trainer-pyco2
+                -   image: 465848653329.dkr.ecr.us-west-2.amazonaws.com/pyco2-microservice
+                    name: pyco2-microservice
                     ports:
                         -   name: web
                             containerPort: 8080
@@ -31,13 +31,13 @@ kind: Service
 apiVersion: v1
 metadata:
     labels:
-        app: trainer-pyco2-service
-    name: trainer-pyco2-service
+        app: pyco2-microservice-service
+    name: pyco2-microservice-service
     namespace: microservices
 spec:
     selector:
         source: pyco2
-        app: trainer-pyco2
+        app: pyco2-microservice
     ports:
         -   name: web
             protocol: TCP
@@ -59,7 +59,6 @@ spec:
                 paths:
                     -   path: /pyco2(/|$)(.*)
                         backend:
-                            serviceName: trainer-pyco2-service
+                            serviceName: pyco2-microservice-service
                             servicePort: 30201
-
 
